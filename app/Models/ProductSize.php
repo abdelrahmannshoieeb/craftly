@@ -11,7 +11,9 @@ class ProductSize extends Model
 
 
     protected $guarded = [];
-
+    protected $casts = [
+        'size_image' => 'array', 
+    ];
     public function product()
     {
         return $this->belongsTo(Product::class);

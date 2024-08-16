@@ -45,6 +45,7 @@ class Order extends Model
     public function getTotalPriceAttribute()
     {
         $cartItems = $this->cartItem; 
+        $customPrice = $this->customization_price ?? 0; 
     
         $total = $cartItems->sum(function ($cartItem) {
             $product = $cartItem->product;
@@ -55,6 +56,8 @@ class Order extends Model
             return $product->base_price + $colorPrice + $additionPrice + $sizePrice;
         });
     
+        $total += $customPrice;
+    
         $totalWithDiscounts = $cartItems->sum(function ($cartItem) {
             $product = $cartItem->product;
             $colorPrice = $cartItem->color_price ?? 0;
@@ -62,18 +65,21 @@ class Order extends Model
             $sizePrice = $cartItem->size_price ?? 0;
     
             $itemTotal = $product->base_price + $colorPrice + $additionPrice + $sizePrice;
-    
             $discount = $product->discount_value ?? 0; 
             $itemTotal -= ($itemTotal * ($discount / 100));
     
             return $itemTotal;
         });
     
+        $totalWithDiscounts += $customPrice;
+    
         $coupon = $this->coupon; 
         if ($coupon) {
             $totalWithDiscounts *= (1 - ($coupon->discount_multiplier ?? 0));
         }
+    
         $totalWithDiscounts = max($totalWithDiscounts, 0);
+    
         return number_format($totalWithDiscounts, 2); 
-}
+    }
 }

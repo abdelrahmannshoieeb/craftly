@@ -31,6 +31,7 @@ class ProductAdditionRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('addition'),
                 Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\ImageColumn::make('adition_image'),
             ])
             ->filters([
                 //

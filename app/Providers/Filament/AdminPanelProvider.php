@@ -17,12 +17,14 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+        
             ->default()
             ->id('admin')
             ->path('admin')
@@ -40,6 +42,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -50,9 +53,21 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            // ->defaultAvatarProvider(
+            //     \LaraZeus\Boredom\BoringAvatarsProvider::class
+            // )
+         
+            ->plugins([
+                FilamentBackgroundsPlugin::make(),
+            ])
+            ->plugin(
+                \Hasnayeen\Themes\ThemesPlugin::make()
+            );
+            ;
     }
 }

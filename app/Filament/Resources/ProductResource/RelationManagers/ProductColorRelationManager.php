@@ -32,6 +32,7 @@ class ProductColorRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('color'),
                 Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\ImageColumn::make('color_image'),
                 Tables\Columns\TextColumn::make('hex')
                 ->label('Color')
                 ->formatStateUsing(function ($record) {

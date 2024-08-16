@@ -10,7 +10,9 @@ class ProductColor extends Model
     use HasFactory;
 
     protected $guarded = [];
-
+    protected $casts = [
+        'color_image' => 'array', 
+    ];
     public function product()
     {
         return $this->belongsTo(Product::class);

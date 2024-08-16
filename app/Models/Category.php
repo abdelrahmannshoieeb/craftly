@@ -10,6 +10,11 @@ class Category extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $casts = [
+        'gallery' => 'array', 
+        'images' => 'array', 
+    ];
+
 
     public function products()
     {

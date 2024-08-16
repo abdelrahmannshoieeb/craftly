@@ -16,6 +16,8 @@ class Product extends Model
         'colors' => 'array',
         'sizes' => 'array',
         'additions' => 'array',
+        'gallery' => 'array', 
+        'images' => 'array', 
     ];
 
 

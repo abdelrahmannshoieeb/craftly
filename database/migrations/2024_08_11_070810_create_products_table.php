@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('base_price', 10, 2);
             $table->decimal('stock');
             $table->decimal('discount_value')->nullable();
+            $table->text('tags')->nullable();
 
             $table->json('colors')->nullable();
             $table->json('sizes')->nullable();
