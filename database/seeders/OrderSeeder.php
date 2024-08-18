@@ -49,7 +49,7 @@ class OrderSeeder extends Seeder
             ],
             [
                 'cart_id' => 1,
-                'user_id' => 2,
+                'user_id' => 1,
                 'coupon_id' => 1,  
                 'note' => 'Leave at the front door',
                 'location' => '456 Oak Avenue',

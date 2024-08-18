@@ -6,6 +6,7 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers\CartItemRelationManager;
 
 use App\Models\Order;
+use App\Tables\Columns\ProgressCoulmn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +15,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -97,22 +99,24 @@ class OrderResource extends Resource
                 ->trueIcon('heroicon-o-check-circle')
                 ->falseIcon('heroicon-o-x-circle'),
 
-            Tables\Columns\TextColumn::make('customization_price')
+            TextColumn::make('customization_price')
                 ->label('Customization Price')
                 ->money('usd', true),
 
-            Tables\Columns\TextColumn::make('customization_description')
+            TextColumn::make('customization_description')
                 ->label('Customization Description'),
 
-                Tables\Columns\TextColumn::make('total_price')
-                ->label('Total Price'),
-
-            Tables\Columns\TextColumn::make('created_at')
+            TextColumn::make('total_price')
+            ->label('Total Price'),
+            ViewColumn::make('Items')
+            ->label('Items')
+            ->view('components.orderitems'),
+            TextColumn::make('created_at')
                 ->label('Created At')
                 ->dateTime('Y-m-d H:i:s')
                 ->toggleable(isToggledHiddenByDefault: true),
 
-            Tables\Columns\TextColumn::make('updated_at')
+            TextColumn::make('updated_at')
                 ->label('Updated At')
                 ->dateTime('Y-m-d H:i:s')
                 ->toggleable(isToggledHiddenByDefault: true),

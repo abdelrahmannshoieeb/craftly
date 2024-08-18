@@ -7,6 +7,7 @@ use App\Filament\Resources\ColorResource\RelationManagers;
 use App\Models\Color;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Models\Contracts\FilamentUser;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -84,4 +85,6 @@ class ColorResource extends Resource
             'edit' => Pages\EditColor::route('/{record}/edit'),
         ];
     }
+
+
 }

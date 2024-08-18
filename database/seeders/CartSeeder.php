@@ -17,17 +17,20 @@ class CartSeeder extends Seeder
         DB::table('carts')->insert([
             [
                 'user_id' => '1',
+                'username' =>'user',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'user_id' => '3',              
+                'username' =>'user',
                 'created_at' => now(),
                 'updated_at' => now(),
                 ''
             ],
             [
-                'user_id' => '2',               
+                'user_id' => '2',    
+                'username' =>'user',           
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

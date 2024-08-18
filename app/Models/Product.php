@@ -18,6 +18,7 @@ class Product extends Model
         'additions' => 'array',
         'gallery' => 'array', 
         'images' => 'array', 
+        'tags' => 'array', 
     ];
 
 

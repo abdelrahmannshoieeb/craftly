@@ -17,6 +17,8 @@ use Filament\Tables;
 
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Grid;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,6 +34,7 @@ class CategoryResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+
             ->schema([
                 
                 TextInput::make('name')
@@ -67,12 +70,19 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        
+
             ->columns([
         
                 TextColumn::make('name')
                     ->searchable(),
+
                 TextColumn::make('description')
+                
+                    ->searchable()
+                    
                     ->searchable(),
+
                 TextColumn::make('details')
                 ->searchable(),
 

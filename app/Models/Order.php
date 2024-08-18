@@ -41,6 +41,8 @@ class Order extends Model
         return $this->attributes['deposit_status'] === 'paid';
     }
 
+    
+
 
     public function getTotalPriceAttribute()
     {

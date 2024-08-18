@@ -12,12 +12,15 @@ use App\Models\Color;
 use App\Models\Product;
 use App\Models\Size;
 use Filament\Forms;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,6 +30,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
@@ -63,6 +67,11 @@ class ProductResource extends Resource
                         Textarea::make('detailes')
                         ->placeholder('Details')
                             ->maxLength(65535),
+                       
+                            TagsInput::make('tags')
+                            ->separator(',')
+                            ->required()
+                            ->columnSpanFull()
                     ])
                     ->columns(2)
                     ->columnSpan(2),
@@ -101,8 +110,27 @@ class ProductResource extends Resource
                                 Select::make('color_id')
                                 ->placeholder('color')
                                     ->label('Color')
+                                    ->searchable()
                                     ->options(Color::all()->pluck('color', 'id')) 
-                                    ->required(),
+                                    ->required()
+                                    ->createOptionForm([
+                                        TextInput::make('color'),
+                                        // ColorPicker::make('Pick a color'),
+                                        TextInput::make('hex code')
+                                        ->prefix('#'),
+                                        View::make('components.color-picker'),
+                                    ])
+                                    ->createOptionUsing(function (array $data) {
+                                        $hex = $data['hex'];
+                                        if (!str_starts_with($hex, '#')) {
+                                            $hex = '#' . $hex;
+                                        }
+                                        $color = Color::create([
+                                            'color' => $data['color'],
+                                            'hex' => $hex,
+                                        ]);
+                                        return $color->id;
+                                    }),
                                 TextInput::make('price')
                                 ->placeholder('price')
                                     ->label('Price')
@@ -124,7 +152,17 @@ class ProductResource extends Resource
                                 ->placeholder('Size')
                                     ->label('size')
                                     ->options(Size::all()->pluck('size', 'id'))
-                                    ->required(),
+                                    ->required()
+                                    ->createOptionForm([
+                                        TextInput::make('size'),
+                                    ])
+                                    ->createOptionUsing(function (array $data) {
+                                      
+                                        $size = Size::create([
+                                            'size' => $data['size'],
+                                        ]);
+                                        return $size->id;
+                                    }),
                                 TextInput::make('price')
                                     ->label('Price')
                                     ->placeholder('Price')
@@ -143,7 +181,17 @@ class ProductResource extends Resource
                                 ->placeholder('Addition')
                                     ->label('addition')
                                     ->options(Addition::all()->pluck('addition', 'id'))
-                                    ->required(),
+                                    ->required()
+                                    ->createOptionForm([
+                                        TextInput::make('Addition'),
+                                    ])
+                                    ->createOptionUsing(function (array $data) {
+                                      
+                                        $addition = Addition::create([
+                                            'addition' => $data['addition'],
+                                        ]);
+                                        return $addition->id;
+                                    }),
                                 TextInput::make('price')
                                 ->placeholder('Price')
                                     ->label('Price')
@@ -158,6 +206,8 @@ class ProductResource extends Resource
                             ->columns(3)
                             ->collapsible(),
                         ])  ->columnSpan(2),
+
+                       
 
                         Section::make('Images')
                         ->collapsible()
@@ -179,7 +229,10 @@ class ProductResource extends Resource
                             ])->columns(1)
                             ->columnSpan(1),
               
+                            
             ])->columns(3);
+
+            
     }
 
     public static function table(Table $table): Table
@@ -279,7 +332,7 @@ class ProductResource extends Resource
     public static function saveData(array $data): Product
     {
         $product = Product::create($data['product']);
-
+        
         foreach ($data['colors'] as $color) {
             $colorName = DB::table('colors')->where('id', $color['color_id'])->value('color');
             $hex = DB::table('colors')->where('id', $color['color_id'])->value('hex');
