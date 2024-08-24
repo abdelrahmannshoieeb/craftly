@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ReviewResource extends Resource
 {
     protected static ?string $model = Review::class;
-
+    protected static ?string $navigationGroup = 'User';
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
     public static function form(Form $form): Form

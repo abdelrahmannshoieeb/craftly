@@ -11,9 +11,11 @@ use App\Models\Addition;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Size;
+use App\Models\Tag;
 use Filament\Forms;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -37,6 +39,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductResource extends Resource
 {
+    protected static ?string $navigationGroup = 'Crafty';
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
@@ -68,10 +71,10 @@ class ProductResource extends Resource
                         ->placeholder('Details')
                             ->maxLength(65535),
                        
-                            TagsInput::make('tags')
-                            ->separator(',')
+                            MultiSelect::make('tags')
+                            ->options(Tag::pluck('tag', 'id')->toArray()) 
                             ->required()
-                            ->columnSpanFull()
+                            ->columnSpanFull(),
                     ])
                     ->columns(2)
                     ->columnSpan(2),
@@ -319,13 +322,16 @@ class ProductResource extends Resource
         $colorData = $data['colors'] ?? [];
         $sizeData = $data['sizes'] ?? [];
         $additionData = $data['additions'] ?? [];
-     
+        $tagData = $data['tags'] ?? []; 
+        
+
 
         return [
             'product' => $productData,
             'colors' => $colorData,
             'sizes' => $sizeData,
             'additions' => $additionData,
+            'tags' => $tagData,
    
         ];
     }
@@ -372,6 +378,18 @@ class ProductResource extends Resource
                 'name' => $sizeName,
                 'size_image' => $sizeImageWithQuotes, 
             ]);
+            if (isset($data['tags']) && is_array($data['tags'])) {
+                $tagData = array_map(function($tagId) use ($product) {
+                    return [
+                        'product_id' => $product->id,
+                        'tag_id' => $tagId,
+                    ];
+                }, $data['tags']);
+        
+                DB::table('tag_products')->insert($tagData);
+            }
+        
+
         }
         
 

@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AdditionResource extends Resource
 {
+
+    protected static ?string $navigationGroup = 'Variations';
+
     protected static ?string $model = Addition::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-plus-circle';

@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CategoryResource extends Resource
 {
+    protected static ?string $navigationGroup = 'Crafty';
+
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

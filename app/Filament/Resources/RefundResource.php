@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RefundResource extends Resource
 {
+    protected static ?string $navigationGroup = 'Orders';
+
     protected static ?string $model = Refund::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

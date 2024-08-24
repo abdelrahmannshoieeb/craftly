@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ColorResource extends Resource
 {
+
+    protected static ?string $navigationGroup = 'Variations';
     protected static ?string $model = Color::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-paint-brush';

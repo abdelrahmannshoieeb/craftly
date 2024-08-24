@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CouponResource extends Resource
 {
     protected static ?string $model = Coupon::class;
-
+    protected static ?string $navigationGroup = 'Crafty';
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
     public static function form(Form $form): Form
